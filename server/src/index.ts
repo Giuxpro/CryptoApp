@@ -1,22 +1,14 @@
+import "dotenv/config"
 import express from 'express';
-const ParseServer = require('parse-server').ParseServer;
-
+import { parseDashboard } from './config/parseDashboard'
+import { parseServer } from './config/parseServer'
 const app = express();
+const { PORT } = process.env;
 
-const api = new ParseServer({
-    databaseURI: 'mongodb://localhost:27017/CryptoApp',
-    cloud: './src/cloud/main.js',
-    appId: 'myAppId',
-    fileKey: 'myFileKey',
-    masterKey: 'mySecretMasterKey',
-  });
+app.use('/dashboard', parseDashboard.show());
+app.use('/parse', parseServer.run());
 
- api.start();
-
-app.use('/parse', api.app);
-
-
-const port = 1337;
+const port = PORT || 1335
 app.listen(port, function() {
   console.log(`parse-server app running on port ${port}.`);
 });
