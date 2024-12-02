@@ -17,17 +17,21 @@ export const UserService = {
             const User = Parse.Object.extend('User');
             const user = new User();
 
-            const encryptedPassword = CryptoJS.SHA256(password + email).toString(CryptoJS.enc.Base64);
-            
+            // const encryptedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+           
             user.set('username', username);
-            user.set('password', encryptedPassword);
+            user.set('password', password);
             user.set('email', email);
         
-        
-            const savedUser = await user.save();
+            const savedUser = await user.signUp();
+          
             return savedUser;
         } catch (error:any) {
-            throw new Error(`Error saving user: ${ error.message}`);
+            if (error.message.includes('user already exists')) {
+                throw new Error('User already exists');
+            } else{
+                throw new Error(`An unexpected error has occurred: ${error.message}`);
+            }
         }
     },
 
@@ -36,18 +40,21 @@ export const UserService = {
             const query = new Parse.Query('User');
             query.equalTo('email', email);
 
-            const user = await query.first({ useMasterKey: true });
-            if (!user) {
-                throw new Error(`User with email ${email} not found`);
-            }
+            const user = await Parse.User.logIn(email, password);
+            
+            // const user = await query.first({ useMasterKey: true });
 
-            const storedPasswordHash = user.get('password');
+            // if (!user) {
+            //     throw new Error(`User with email ${email} not found`);
+            // }
 
-            const encryptedInputPassword = CryptoJS.SHA256(password + email).toString(CryptoJS.enc.Base64);
+            // const storedPasswordHash = user.get('password');
 
-            if (storedPasswordHash !== encryptedInputPassword) {
-                throw new Error('Incorrect password');
-            }
+            // const encryptedInputPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+    
+            // if (storedPasswordHash !== encryptedInputPassword) {
+            //     throw new Error('Incorrect password');
+            // }
 
             return {
                 message: 'Inicio de sesión exitoso',
@@ -57,7 +64,16 @@ export const UserService = {
                 },
             };
         } catch (error: any) {
-            throw new Error(`Error getting user: ${ error.message}`);
+            if (error.message.includes('Incorrect password')) {
+               
+                throw new Error('Contraseña incorrecta');
+            } else if (error.message.includes('not found')) {
+               
+                throw new Error('Usuario no encontrado');
+            } else {
+              
+                throw new Error(`Error al intentar iniciar sesión: ${error.message}`);
+            }
         }
     },
 }

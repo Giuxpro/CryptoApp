@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { LoginFormData } from '../interfaces/loginFormData.interfaces';
 import { loginUser } from '../services/login.services';
 
-const Login = () => {
+export const Login = () => {
   const navigate = useNavigate();
   
   const {
@@ -15,12 +15,11 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     console.log('Datos del formulario:', data);
     const userLogged = await loginUser(data)
-
-    if(userLogged){
-     navigate('/home');  
+    console.log("User logged", userLogged);
+    if(!userLogged){
+      return 
     }
-    return
-
+    navigate('/home');  
   };
 
   return (
@@ -110,4 +109,3 @@ const Login = () => {
   );
 };
 
-export default Login;

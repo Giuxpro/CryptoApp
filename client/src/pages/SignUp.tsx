@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { signUpFormData } from '../interfaces/signUp.interfaces';
 import { createUser } from '../services/signUp.services';
 
-const SignUp = () => {
+export const SignUp = () => {
   const [formData, setFormData] = useState({ username: '', password: '', email:'' });
   const navigate = useNavigate();
 
@@ -15,8 +15,10 @@ const SignUp = () => {
   } = useForm<signUpFormData>();
 
   const onSubmit:SubmitHandler<signUpFormData>= async (data) => {
-    await createUser(data)
- 
+    const createdUser = await createUser(data)
+    if(!createdUser){
+      return
+    }
     setFormData(formData)
     navigate('/login');
   };
@@ -96,7 +98,3 @@ const SignUp = () => {
     </section>
   );
 };
-
-export default SignUp;
-
-export {}

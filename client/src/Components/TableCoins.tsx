@@ -18,7 +18,12 @@ const titlesHeader = [
   // 'Last 7 Days',
 ];
 
-export const TableCoins = ({ coinData }: TableCoinsProps) => {
+export const TableCoins = ({ coinData, searchCoin }: TableCoinsProps) => {
+
+  const filteredCoins = coinData.filter(
+    (coin) =>  coin.name.toLocaleLowerCase().includes(searchCoin.toLocaleLowerCase()) || coin.symbol.toLocaleLowerCase().includes(searchCoin.toLocaleLowerCase())
+  );
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full table-auto text-sm font-light border-collapse">
@@ -33,7 +38,7 @@ export const TableCoins = ({ coinData }: TableCoinsProps) => {
         </thead>
         <tbody>
           {coinData.length > 0 ? (
-            coinData.map((coin, index) => (
+            filteredCoins.map((coin, index) => (
                 <CoinRow coin={coin} index={index + 1} key={index}/>
             ))
           ) : (
