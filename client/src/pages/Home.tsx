@@ -29,6 +29,7 @@ export const Home = () => {
 
   const handleLogout = () => {
     navigate('/login');
+    localStorage.removeItem('authToken')
   };
 
   return (
