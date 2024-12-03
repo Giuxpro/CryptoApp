@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import { Coin } from '../interfaces/coin.interfaces'; 
+import { useState } from 'react';
 import Switcher11 from './SwitcherStatusCoin';
+import { NavbarProps } from '../interfaces/navbarProps.interfaces';
 
-interface NavbarCompProps {
-    setSearchCoin: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export const NavbarComp: React.FC<NavbarCompProps> = ({ setSearchCoin }) => {
+export const NavbarComp = ({ setSearchCoin }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -40,7 +36,7 @@ export const NavbarComp: React.FC<NavbarCompProps> = ({ setSearchCoin }) => {
 
           <ul className="lg:flex lg:ml-14 lg:gap-x-5 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
             <li className="mb-6 hidden max-lg:block">
-              <a href="javascript:void(0)">
+              <a href="#">
                 <img src="https://readymadeui.com/readymadeui.svg" alt="logo" className="w-36" />
               </a>
             </li>
@@ -55,7 +51,7 @@ export const NavbarComp: React.FC<NavbarCompProps> = ({ setSearchCoin }) => {
               </a>
             </li>
             <li className="max-lg:border-b max-lg:py-3 px-3">
-              <a href="javascript:void(0)" className="lg:hover:text-[#007bff] text-gray-800 block font-semibold text-[15px]">
+              <a href="#" className="lg:hover:text-[#007bff] text-gray-800 block font-semibold text-[15px]">
                 Favorite
               </a>
             </li>

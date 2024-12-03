@@ -3,7 +3,7 @@ import * as CryptoJS from 'crypto-js';
 
 export const UserService = {
     
-    createUser: async (username:string, password:string, email:string) => {
+    createUserService: async (username:string, password:string, email:string) => {
     
         try {
             const query = new Parse.Query('User');
@@ -35,44 +35,21 @@ export const UserService = {
         }
     },
 
-    loginUser: async (email: string, password:string) => {
+    loginUserService: async (email: string, password:string) => {
         try {
-            const query = new Parse.Query('User');
-            query.equalTo('email', email);
-
+        
             const user = await Parse.User.logIn(email, password);
-            
-            // const user = await query.first({ useMasterKey: true });
-
-            // if (!user) {
-            //     throw new Error(`User with email ${email} not found`);
-            // }
-
-            // const storedPasswordHash = user.get('password');
-
-            // const encryptedInputPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
-    
-            // if (storedPasswordHash !== encryptedInputPassword) {
-            //     throw new Error('Incorrect password');
-            // }
 
             return {
-                message: 'Inicio de sesión exitoso',
-                user: {
-                  username: user.get('username'),
-                  email: user.get('email'),
-                },
+                token: user.getSessionToken(),
+                user: user.toJSON(),
             };
+
         } catch (error: any) {
-            if (error.message.includes('Incorrect password')) {
-               
-                throw new Error('Contraseña incorrecta');
-            } else if (error.message.includes('not found')) {
-               
-                throw new Error('Usuario no encontrado');
+            if (error.code === 101) {
+                throw new Error('Incorrect username or password');
             } else {
-              
-                throw new Error(`Error al intentar iniciar sesión: ${error.message}`);
+                throw new Error(`Error trying to log in: ${error.message}`);
             }
         }
     },

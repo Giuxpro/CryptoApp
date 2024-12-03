@@ -16,7 +16,7 @@ export const AppReactToastify: React.FC<AppReactToastifyProps> = (props) => {
   }
 
   const position = direction === 'rtl' ? positionMap['top-right'] : 'top-right'; // Ajusta la posición por defecto aquí
-  console.log("position: ", position)
+ 
   return (
     <div className="relative">
       <ToastContainer

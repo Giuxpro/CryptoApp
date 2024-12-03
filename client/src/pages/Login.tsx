@@ -13,11 +13,12 @@ export const Login = () => {
   } = useForm<LoginFormData>();
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    console.log('Datos del formulario:', data);
+    
     const userLogged = await loginUser(data)
-    console.log("User logged", userLogged);
-    if(!userLogged){
-      return 
+
+    if (!userLogged || !userLogged.token) {
+      console.log('user no validated:',userLogged);
+      return;
     }
     navigate('/home');  
   };
