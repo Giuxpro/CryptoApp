@@ -17,7 +17,7 @@ Parse.serverURL = `${REACT_APP_API_URL_PARSE}`;
 
 
 const initializeParseSession = async () => {
-  const token = localStorage.getItem('authToken');
+  const token = sessionStorage.getItem('authToken');
 
   if (token) {
     try {
@@ -25,7 +25,7 @@ const initializeParseSession = async () => {
       console.log("User authenticated with token:", token);
     } catch (error) {
       console.error("Error during session restoration:", error);
-      localStorage.removeItem('authToken');
+      sessionStorage.removeItem('authToken');
     }
   }
 };

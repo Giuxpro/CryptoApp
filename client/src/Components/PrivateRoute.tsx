@@ -10,7 +10,7 @@ export const PrivateRoute = ({ element, ...rest }: PrivateRouteProps) => {
     React.useEffect(() => {
         const checkUser = async () => {
           try {
-            const token = localStorage.getItem('authToken'); 
+            const token = sessionStorage.getItem('authToken'); 
           
             if(token){ 
                 await Parse.User.become(token);
